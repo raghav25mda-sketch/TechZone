@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}
+Order Confirmed - TechZone
+{% endblock %}
+
+
+{% block content %}
+
+<section class="success-page">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+
+        <h1>
+            Order Confirmed!
+        </h1>
+
+
+        <p>
+            Thank you for shopping with TechZone.
+        </p>
+
+
+        <p>
+            Your order number is
+            <strong>
+                #{{ order.id }}
+            </strong>
+        </p>
+
+
+        <p>
+            Total:
+
+            <strong>
+                ₹{{ "{:,.0f}".format(order.total) }}
+            </strong>
+        </p>
+
+
+        <div class="actions">
+
+            <a
+                class="btn"
+                href="{{ url_for('orders') }}"
+            >
+
+                View My Orders
+
+            </a>
+
+
+            <a
+                class="btn secondary"
+                href="{{ url_for('products') }}"
+            >
+
+                Continue Shopping
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+gtag('event', 'purchase', {
+
+    transaction_id: '{{ order.id }}',
+
+    value: {{ order.total }},
+
+    currency: 'INR'
+
+});
+
+</script>
+
+{% endblock %}

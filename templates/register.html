@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}
+Register - TechZone
+{% endblock %}
+
+
+{% block content %}
+
+<section class="auth-page">
+
+    <form
+        class="auth-card"
+        method="post"
+        onsubmit="trackSignUp()"
+    >
+
+        <h1>
+            Create Account
+        </h1>
+
+        <p>
+            Join TechZone and start shopping.
+        </p>
+
+
+        <label>
+            Name
+        </label>
+
+        <input
+            type="text"
+            name="name"
+            required
+        >
+
+
+        <label>
+            Email
+        </label>
+
+        <input
+            type="email"
+            name="email"
+            required
+        >
+
+
+        <label>
+            Password
+        </label>
+
+        <input
+            type="password"
+            name="password"
+            minlength="6"
+            required
+        >
+
+
+        <button
+            class="btn full"
+            type="submit"
+        >
+
+            Create Account
+
+        </button>
+
+
+        <p>
+
+            Already registered?
+
+            <a href="{{ url_for('login') }}">
+                Login
+            </a>
+
+        </p>
+
+    </form>
+
+</section>
+
+{% endblock %}

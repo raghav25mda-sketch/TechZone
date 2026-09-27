@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}
+Products - TechZone
+{% endblock %}
+
+
+{% block content %}
+
+<section class="section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <h1>
+                All Products
+            </h1>
+
+            <p>
+                Explore our electronics collection.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="filters">
+
+        <a href="{{ url_for('products') }}"
+           class="filter {% if not selected_category %}active{% endif %}">
+
+            All
+
+        </a>
+
+
+        {% for category in categories %}
+
+        <a
+            href="{{ url_for('products',
+                             category=category.category) }}"
+
+            class="filter
+            {% if selected_category == category.category %}
+                active
+            {% endif %}"
+
+            onclick="trackCategory('{{ category.category }}')">
+
+            {{ category.category }}
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% if search %}
+
+    <p class="search-result">
+
+        Search results for:
+
+        <strong>
+            {{ search }}
+        </strong>
+
+    </p>
+
+    {% endif %}
+
+
+    <div class="product-grid">
+
+        {% for product in products %}
+
+        <article class="product-card">
+
+            <a
+                href="{{ url_for('product_details',
+                                 product_id=product.id) }}"
+
+                onclick="trackViewItem(
+                    '{{ product.id }}',
+                    '{{ product.name }}',
+                    '{{ product.category }}',
+                    {{ product.price }}
+                )">
+
+                <div class="product-image">
+                    {{ product.icon }}
+                </div>
+
+                <h3>
+                    {{ product.name }}
+                </h3>
+
+            </a>
+
+
+            <p class="category-label">
+                {{ product.category }}
+            </p>
+
+
+            <p class="price">
+                ₹{{ "{:,.0f}".format(product.price) }}
+            </p>
+
+
+            <form
+                action="{{ url_for('add_to_cart',
+                                   product_id=product.id) }}"
+                method="post"
+
+                onsubmit="trackAddToCart(
+                    '{{ product.id }}',
+                    '{{ product.name }}',
+                    '{{ product.category }}',
+                    {{ product.price }}
+                )">
+
+                <button class="btn full"
+                        type="submit">
+
+                    Add to Cart
+
+                </button>
+
+            </form>
+
+        </article>
+
+
+        {% else %}
+
+        <div class="empty">
+
+            <h2>
+                No products found
+            </h2>
+
+            <p>
+                Try another search or category.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

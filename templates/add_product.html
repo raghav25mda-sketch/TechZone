@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Product - TechZone
+{% endblock %}
+
+
+{% block content %}
+
+<section class="auth-page">
+
+    <form
+        class="auth-card"
+        method="post"
+    >
+
+        <h1>
+            Add Product
+        </h1>
+
+
+        <label>
+            Product ID
+        </label>
+
+        <input
+            type="number"
+            name="id"
+            required
+        >
+
+
+        <label>
+            Product Name
+        </label>
+
+        <input
+            type="text"
+            name="name"
+            required
+        >
+
+
+        <label>
+            Category
+        </label>
+
+        <input
+            type="text"
+            name="category"
+            required
+        >
+
+
+        <label>
+            Price
+        </label>
+
+        <input
+            type="number"
+            name="price"
+            step="0.01"
+            required
+        >
+
+
+        <label>
+            Icon / Emoji
+        </label>
+
+        <input
+            type="text"
+            name="icon"
+            value="📦"
+        >
+
+
+        <label>
+            Description
+        </label>
+
+        <textarea
+            name="description"
+            rows="4"
+        ></textarea>
+
+
+        <button
+            class="btn full"
+            type="submit"
+        >
+
+            Add Product
+
+        </button>
+
+    </form>
+
+</section>
+
+{% endblock %}

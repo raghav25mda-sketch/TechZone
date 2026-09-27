@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}
+TechZone - Electronics Store
+{% endblock %}
+
+
+{% block content %}
+
+<section class="hero">
+
+    <div>
+
+        <p class="eyebrow">
+            TECHNOLOGY FOR EVERYDAY LIFE
+        </p>
+
+        <h1>
+            Upgrade Your Tech.
+        </h1>
+
+        <p>
+            Discover smartphones, laptops, headphones,
+            smartwatches and more.
+        </p>
+
+        <a class="btn"
+           href="{{ url_for('products') }}">
+
+            Shop Now
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <h2>
+        Shop by Category
+    </h2>
+
+    <div class="category-grid">
+
+        {% for category in [
+            "Smartphones",
+            "Laptops",
+            "Headphones",
+            "Smartwatches",
+            "Cameras",
+            "Monitors",
+            "Accessories"
+        ] %}
+
+        <a class="category-card"
+           href="{{ url_for('products', category=category) }}"
+           onclick="trackCategory('{{ category }}')">
+
+            <div class="category-icon">
+
+                {% if category == "Smartphones" %}
+                    📱
+                {% elif category == "Laptops" %}
+                    💻
+                {% elif category == "Headphones" %}
+                    🎧
+                {% elif category == "Smartwatches" %}
+                    ⌚
+                {% elif category == "Cameras" %}
+                    📷
+                {% elif category == "Monitors" %}
+                    🖥️
+                {% else %}
+                    ⌨️
+                {% endif %}
+
+            </div>
+
+            <h3>
+                {{ category }}
+            </h3>
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<section class="section light">
+
+    <div class="section-heading">
+
+        <h2>
+            Featured Products
+        </h2>
+
+        <a href="{{ url_for('products') }}">
+            View All →
+        </a>
+
+    </div>
+
+
+    <div class="product-grid">
+
+        {% for product in products %}
+
+        <article class="product-card">
+
+            <a href="{{ url_for('product_details',
+                                product_id=product.id) }}"
+
+               onclick="trackViewItem(
+                    '{{ product.id }}',
+                    '{{ product.name }}',
+                    '{{ product.category }}',
+                    {{ product.price }}
+               )">
+
+                <div class="product-image">
+                    {{ product.icon }}
+                </div>
+
+                <h3>
+                    {{ product.name }}
+                </h3>
+
+            </a>
+
+            <p class="category-label">
+                {{ product.category }}
+            </p>
+
+            <p class="price">
+                ₹{{ "{:,.0f}".format(product.price) }}
+            </p>
+
+
+            <form
+                action="{{ url_for('add_to_cart',
+                                   product_id=product.id) }}"
+                method="post"
+
+                onsubmit="trackAddToCart(
+                    '{{ product.id }}',
+                    '{{ product.name }}',
+                    '{{ product.category }}',
+                    {{ product.price }}
+                )">
+
+                <button class="btn full"
+                        type="submit">
+
+                    Add to Cart
+
+                </button>
+
+            </form>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

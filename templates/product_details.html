@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ product.name }} - TechZone
+{% endblock %}
+
+
+{% block content %}
+
+<section class="detail-page">
+
+    <div class="detail-image">
+        {{ product.icon }}
+    </div>
+
+
+    <div class="detail-info">
+
+        <p class="category-label">
+            {{ product.category }}
+        </p>
+
+        <h1>
+            {{ product.name }}
+        </h1>
+
+        <p class="price big">
+            ₹{{ "{:,.0f}".format(product.price) }}
+        </p>
+
+        <p>
+            {{ product.description }}
+        </p>
+
+
+        <form
+            action="{{ url_for('add_to_cart',
+                               product_id=product.id) }}"
+            method="post"
+
+            onsubmit="trackAddToCart(
+                '{{ product.id }}',
+                '{{ product.name }}',
+                '{{ product.category }}',
+                {{ product.price }}
+            )">
+
+            <label>
+                Quantity
+            </label>
+
+            <input
+                class="quantity"
+                type="number"
+                name="quantity"
+                value="1"
+                min="1"
+            >
+
+            <button class="btn"
+                    type="submit">
+
+                Add to Cart
+
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<script>
+
+trackViewItem(
+    "{{ product.id }}",
+    "{{ product.name }}",
+    "{{ product.category }}",
+    {{ product.price }}
+);
+
+</script>
+
+{% endblock %}
