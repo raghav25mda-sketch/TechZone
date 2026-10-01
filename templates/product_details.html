@@ -4,7 +4,6 @@
 {{ product.name }} - TechZone
 {% endblock %}
 
-
 {% block content %}
 
 <section class="detail-page">
@@ -12,7 +11,6 @@
     <div class="detail-image">
         {{ product.icon }}
     </div>
-
 
     <div class="detail-info">
 
@@ -32,18 +30,17 @@
             {{ product.description }}
         </p>
 
-
         <form
-            action="{{ url_for('add_to_cart',
-                               product_id=product.id) }}"
+            action="{{ url_for('add_to_cart', product_id=product.id) }}"
             method="post"
-
-            onsubmit="trackAddToCart(
-                '{{ product.id }}',
-                '{{ product.name }}',
-                '{{ product.category }}',
+            onsubmit="return trackAddToCartAndSubmit(
+                this,
+                {{ product.id|tojson }},
+                {{ product.name|tojson }},
+                {{ product.category|tojson }},
                 {{ product.price }}
-            )">
+            );"
+        >
 
             <label>
                 Quantity
@@ -57,11 +54,8 @@
                 min="1"
             >
 
-            <button class="btn"
-                    type="submit">
-
+            <button class="btn" type="submit">
                 Add to Cart
-
             </button>
 
         </form>
@@ -72,6 +66,44 @@
 
 
 <script>
+
+function trackAddToCartAndSubmit(form, productId, productName, category, price) {
+
+    const quantityInput = form.querySelector('input[name="quantity"]');
+    const quantity = Math.max(1, Number(quantityInput.value || 1));
+
+    const submitForm = () => {
+        form.submit();
+    };
+
+    // Send Add to Cart event to Google Analytics
+    if (typeof gtag === "function") {
+
+        gtag("event", "add_to_cart", {
+            currency: "INR",
+            value: price * quantity,
+
+            items: [
+                {
+                    item_id: String(productId),
+                    item_name: productName,
+                    item_category: category,
+                    price: Number(price),
+                    quantity: quantity
+                }
+            ]
+        });
+
+    }
+
+    // Give GA4 a short time to send the event
+    // before the page redirects.
+    setTimeout(submitForm, 700);
+
+    // Prevent the browser's immediate form submission
+    return false;
+}
+
 
 trackViewItem(
     "{{ product.id }}",
